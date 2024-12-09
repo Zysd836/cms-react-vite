@@ -1,25 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-import MainLayout from './layout/MainLayout'
-import Home from './pages/Home'
-import NotFound from './pages/NotFound'
+import { routeManager } from './routes'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Home />
-      }
-    ]
-  },
-  {
-    path: '*',
-    element: <NotFound />
-  }
-])
+const router = createBrowserRouter(routeManager.getRoutes())
 
 function App() {
   return <RouterProvider router={router} />
