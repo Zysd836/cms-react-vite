@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import './App.css'
 import MainLayout from './layout/MainLayout'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -11,14 +11,14 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />,
-      },
-    ],
+        element: <Home />
+      }
+    ]
   },
   {
     path: '*',
-    element: <NotFound />,
-  },
+    element: <NotFound />
+  }
 ])
 
 function App() {
