@@ -1,17 +1,18 @@
+import { Database, GitPullRequest } from 'lucide-react'
 import { lazy } from 'react'
-import type { RouteObject } from 'react-router-dom'
-type CustomRouteObject = Omit<RouteObject, 'element'> & {
-  component?: React.LazyExoticComponent<({}) => JSX.Element> | React.LazyExoticComponent<React.FC<{}>>
-  children?: CustomRouteObject[]
-  showInMenu?: boolean
-}
+import { CustomRouteObject } from './type'
+import { filterMenuItems, transformRoutes } from './utils'
 // auth
 const BlankLayout = lazy(() => import('@/layout/BlankLayout'))
-const Login = lazy(() => import('@/pages/Login'))
+const Login = lazy(() => import('@/pages/login'))
 // main
 const MainLayout = lazy(() => import('@/layout/MainLayout'))
-const Home = lazy(() => import('@/pages/Home'))
-const NotFound = lazy(() => import('@/pages/NotFound'))
+//
+const Resource = lazy(() => import('@/pages/resource'))
+//
+const ListRequest = lazy(() => import('@/pages/request/List'))
+//
+const NotFound = lazy(() => import('@/pages/not-found'))
 const routes: CustomRouteObject[] = [
   {
     path: '/',
@@ -19,38 +20,38 @@ const routes: CustomRouteObject[] = [
     children: [
       {
         index: true,
-        component: Login
-      }
-    ]
+        component: Login,
+      },
+    ],
   },
   {
     path: '/cms',
     component: MainLayout,
-    showInMenu: true,
+    showMenu: true,
     children: [
       {
-        index: true,
-        component: Home
-      }
-    ]
+        path: '/cms/resource',
+        icon: <Database size={20} />,
+        showInMenu: true,
+        label: 'Tài sản',
+        component: Resource,
+      },
+      {
+        path: '/cms/request',
+        icon: <GitPullRequest size={20} />,
+        showInMenu: true,
+        label: 'Yêu cầu',
+        component: ListRequest,
+      },
+    ],
   },
   {
     path: '*',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ]
-const transformRoutes = (routes: CustomRouteObject[]): RouteObject[] => {
-  // @ts-ignore
-  return routes.map((route) => {
-    const children = route.children ? transformRoutes(route.children) : undefined
-    return {
-      ...('index' in route ? { index: route.index } : {}),
-      path: route.path,
-      ...(route.component ? { element: <route.component /> } : {}),
-      ...(children ? { children } : {})
-    }
-  })
-}
+
 export const routeManager = {
-  getRoutes: () => transformRoutes(routes)
+  getRoutes: () => transformRoutes(routes),
+  getMenus: () => filterMenuItems(routes.find((route) => route.path === '/cms')?.children || []),
 }
