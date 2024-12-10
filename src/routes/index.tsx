@@ -31,14 +31,14 @@ const routes: CustomRouteObject[] = [
     children: [
       {
         path: '/cms/resource',
-        icon: <Database size={20} />,
+        icon: <Database size={14} />,
         showInMenu: true,
         label: 'Tài sản',
         component: Resource,
       },
       {
         path: '/cms/request',
-        icon: <GitPullRequest size={20} />,
+        icon: <GitPullRequest size={14} />,
         showInMenu: true,
         label: 'Yêu cầu',
         component: ListRequest,
