@@ -1,8 +1,7 @@
 import { lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
 type CustomRouteObject = Omit<RouteObject, 'element'> & {
-  component?: React.LazyExoticComponent<() => JSX.Element>
-  layout?: React.LazyExoticComponent<() => JSX.Element>
+  component?: React.LazyExoticComponent<({}) => JSX.Element> | React.LazyExoticComponent<React.FC<{}>>
   children?: CustomRouteObject[]
   showInMenu?: boolean
 }
@@ -27,6 +26,7 @@ const routes: CustomRouteObject[] = [
   {
     path: '/cms',
     component: MainLayout,
+    showInMenu: true,
     children: [
       {
         index: true,

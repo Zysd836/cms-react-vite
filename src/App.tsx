@@ -6,9 +6,17 @@ import { ConfigProvider } from 'antd'
 const router = createBrowserRouter(routeManager.getRoutes())
 
 function App() {
-  return <ConfigProvider >
-    <RouterProvider router={router} />
-  </ConfigProvider>
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#e1b010'
+        }
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  )
 }
 
 export default App
