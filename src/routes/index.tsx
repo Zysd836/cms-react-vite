@@ -4,6 +4,7 @@ type CustomRouteObject = Omit<RouteObject, 'element'> & {
   component?: React.LazyExoticComponent<() => JSX.Element>
   layout?: React.LazyExoticComponent<() => JSX.Element>
   children?: CustomRouteObject[]
+  showInMenu?: boolean
 }
 // auth
 const BlankLayout = lazy(() => import('@/layout/BlankLayout'))
@@ -16,13 +17,20 @@ const routes: CustomRouteObject[] = [
   {
     path: '/',
     component: BlankLayout,
-    handle: {
-      redirect: '/login'
-    },
     children: [
       {
-        path: '/login',
+        index: true,
         component: Login
+      }
+    ]
+  },
+  {
+    path: '/cms',
+    component: MainLayout,
+    children: [
+      {
+        index: true,
+        component: Home
       }
     ]
   },
@@ -32,11 +40,13 @@ const routes: CustomRouteObject[] = [
   }
 ]
 const transformRoutes = (routes: CustomRouteObject[]): RouteObject[] => {
+  // @ts-ignore
   return routes.map((route) => {
     const children = route.children ? transformRoutes(route.children) : undefined
     return {
+      ...('index' in route ? { index: route.index } : {}),
       path: route.path,
-      element: route.component ? <route.component /> : undefined,
+      ...(route.component ? { element: <route.component /> } : {}),
       ...(children ? { children } : {})
     }
   })
